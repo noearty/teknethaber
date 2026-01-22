@@ -1,16 +1,22 @@
 import sqlite3
-import os
 
-DB_PATH = os.path.join(os.path.dirname(__file__), "haberler.db")
+DB_PATH = "net_haber.db"
 
 def get_connection():
     conn = sqlite3.connect(DB_PATH)
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS gonderilen_haberler (
-            hash TEXT PRIMARY KEY,
-            baslik TEXT,
-            kaynak TEXT,
-            tarih TEXT
-        )
+    c = conn.cursor()
+
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS haberler (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        baslik TEXT,
+        ozet TEXT,
+        link TEXT UNIQUE,
+        kaynak TEXT,
+        etiket TEXT,
+        gonderildi INTEGER DEFAULT 0
+    )
     """)
+
+    conn.commit()
     return conn

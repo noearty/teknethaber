@@ -1,3 +1,4 @@
+from database import get_connection
 import asyncio
 import sqlite3
 from telegram import Bot
@@ -9,16 +10,16 @@ CHAT_ID="@teknethaber"
 bot = Bot(token=TOKEN)
 
 async def gonderilecek_haber_var_mi():
-    conn = sqlite3.connect("net_haber.db")
+    conn = get_connection()
     c = conn.cursor()
 
     c.execute("""
         SELECT id, baslik, ozet, link
         FROM haberler
         WHERE gonderildi = 0
-        ORDER BY id ASC
         LIMIT 1
     """)
+
     haber = c.fetchone()
 
     if haber:
